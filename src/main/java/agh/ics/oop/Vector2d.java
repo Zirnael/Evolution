@@ -28,10 +28,8 @@ public class Vector2d {
         int x, y;
         x = Math.max(this.x, other.x);
         y = Math.max(this.y, other.y);
-
-
-        Vector2d res = new Vector2d(x,y);
-        return res;
+        
+        return new Vector2d(x,y);
     }
     public Vector2d lowerLeft(Vector2d other)
     {

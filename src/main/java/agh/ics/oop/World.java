@@ -1,6 +1,7 @@
 package agh.ics.oop;
 
 import javax.lang.model.type.NullType;
+import java.util.Objects;
 
 public class World {
     public static void run(Directions[] tablica) {
@@ -24,39 +25,42 @@ public class World {
         System.out.println("Stop");
     }
     public static void main(String[] args) {
-        System.out.println("system wystartował");
-        String test = args[0];
-        char[] cha = test.toCharArray();
-        int n = cha.length;
+
+
+        System.out.println(MapDirection.NORTH.toUnitVector());
+        System.out.println(MapDirection.SOUTH.toUnitVector());
+
+
+        System.out.println("System wystartował");
+
         int count = 0;
-        for (int i = 0; i < n; i++){
-            if (cha[i] == 'f' || cha[i] == 'b' || cha[i] == 'l' || cha[i] == 'r')
-                count += 1;
+        for (String argument:args){
+            if (Objects.equals(argument, "f") || Objects.equals(argument, "b") || Objects.equals(argument, "l") || Objects.equals(argument, "r"))
+                count++;
         }
+
         Directions[] to_give = new Directions[count];
         count = 0;
-        for(char c: cha){
+        for (String x:args) {
             Directions to_add;
-            switch (c) {
-                case 'f':
+            switch (x){
+                case "f":
                     to_add = Directions.f;
                     break;
-                case 'b':
+                case "b":
                     to_add = Directions.b;
                     break;
-                case 'l':
+                case "l":
                     to_add = Directions.l;
                     break;
-                case 'r':
+                case "r":
                     to_add = Directions.r;
                     break;
                 default:
                     to_add = null;
-            };
-            if(to_add != null){
-                to_give[count] = to_add;
-                count += 1;
             }
+            if (to_add != null)
+                to_give[count++] = to_add;
         }
 
         run(to_give);
