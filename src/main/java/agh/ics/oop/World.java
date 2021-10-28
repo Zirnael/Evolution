@@ -26,11 +26,15 @@ public class World {
     }
     public static void main(String[] args) {
 
+        Animal cat = new Animal();
+        OptionsParser help = new OptionsParser();
+        MoveDirection[] tab = help.parse(args);
 
-        System.out.println(MapDirection.NORTH.toUnitVector());
-        System.out.println(MapDirection.SOUTH.toUnitVector());
+        for (MoveDirection x:tab) {
+            cat.move(x);
+        }
 
-
+        System.out.println(cat);
         System.out.println("System wystartował");
 
         int count = 0;
