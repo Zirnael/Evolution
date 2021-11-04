@@ -26,15 +26,15 @@ public class World {
     }
     public static void main(String[] args) {
 
-        Animal cat = new Animal();
         OptionsParser help = new OptionsParser();
         MoveDirection[] tab = help.parse(args);
 
-        for (MoveDirection x:tab) {
-            cat.move(x);
-        }
+        RectangularMap mapa = new RectangularMap(4,4);
+        MapVisualizer visualizer = new MapVisualizer(mapa);
+        Vector2d start = new Vector2d(0,0);
+        Vector2d end = new Vector2d(3,3);
+        System.out.println(visualizer.draw(start,end));
 
-        System.out.println(cat);
         System.out.println("System wystartował");
 
         int count = 0;
