@@ -3,14 +3,14 @@ package agh.ics.oop;
 import java.util.ArrayList;
 
 public class RectangularMap implements IWorldMap {
-    private int width;
-    private int height;
-    private ArrayList<Animal> animals = new ArrayList();
+
+    private ArrayList<Animal> animals = new ArrayList<>();
+    private MapVisualizer visualizer = new MapVisualizer(this);
+    private Vector2d start = new Vector2d(0, 0);
+    private Vector2d end;
 
     public RectangularMap(int width, int height) {
-        this.width = width;
-        this.height = height;
-
+        this.end = new Vector2d(width, height);
     }
 
 
@@ -18,11 +18,11 @@ public class RectangularMap implements IWorldMap {
         if (this.isOccupied(position))
             return false;
 
-        return position.precedes(new Vector2d(this.width, this.height)) && position.follows(new Vector2d(0, 0));
+        return position.precedes(this.end) && position.follows(this.start);
     }
 
     public boolean place(Animal animal) {
-        if(isOccupied(animal.getPosition()))
+        if (!canMoveTo(animal.getPosition()))
             return false;
 
         this.animals.add(animal);
@@ -31,19 +31,22 @@ public class RectangularMap implements IWorldMap {
     }
 
     public boolean isOccupied(Vector2d position) {
-        for (Animal x :this.animals){
-            if(x.getPosition() == position)
+        for (Animal x : this.animals) {
+            if (x.getPosition().equals(position))
                 return true;
         }
         return false;
     }
 
     public Object objectAt(Vector2d position) {
-        for(Animal x : this.animals)
-        {
-            if (x.getPosition() == position)
+        for (Animal x : this.animals) {
+            if (x.getPosition().equals(position))
                 return x;
         }
         return null;
+    }
+
+    public String toString() {
+        return this.visualizer.draw(this.start, this.end);
     }
 }

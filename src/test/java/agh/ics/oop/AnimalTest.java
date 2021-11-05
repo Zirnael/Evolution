@@ -22,27 +22,26 @@ public class AnimalTest {
 
     @Test
     void bigTest()
-    {/*
+    {
+        IWorldMap mapa = new RectangularMap(4,4);
+        Vector2d start = new Vector2d(2,2);
         OptionsParser help = new OptionsParser();
-        Animal cat = new Animal();
-        Animal dog = new Animal();
+        Animal cat = new Animal(mapa,start);
+        Animal dog = new Animal(mapa,start);
         MoveDirection[] tab = help.parse(new String[]{"f", "forward", "r", "right", "right", "left", "backward", "b", "small", "kitty"});
         MoveDirection[] expected_result = {MoveDirection.FORWARD,MoveDirection.FORWARD,MoveDirection.RIGHT,MoveDirection.RIGHT,MoveDirection.RIGHT,MoveDirection.LEFT,MoveDirection.BACKWARD,MoveDirection.BACKWARD};
 
-        dog.move(MoveDirection.FORWARD);
-        dog.move(MoveDirection.FORWARD);
+        mapa.place(cat);
         int i = 0;
         for (MoveDirection d: tab)
         {
             cat.move(d);
-            dog.move(d);
             Assertions.assertEquals(expected_result[i],tab[i]);
         }
 
         Vector2d expected_position = new Vector2d(2,4);
         Assertions.assertTrue(cat.isAt(expected_position));
-        Assertions.assertTrue(dog.isAt(expected_position));
-    */
+
     }
 
 }
