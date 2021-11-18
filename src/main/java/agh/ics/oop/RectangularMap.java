@@ -2,10 +2,8 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 
-public class RectangularMap implements IWorldMap {
+public class RectangularMap extends AbstractWorldMap {
 
-    private ArrayList<Animal> animals = new ArrayList<>();
-    private MapVisualizer visualizer = new MapVisualizer(this);
     private Vector2d start = new Vector2d(0, 0);
     private Vector2d end;
 
@@ -21,14 +19,6 @@ public class RectangularMap implements IWorldMap {
         return position.precedes(this.end) && position.follows(this.start);
     }
 
-    public boolean place(Animal animal) {
-        if (!canMoveTo(animal.getPosition()))
-            return false;
-
-        this.animals.add(animal);
-        return true;
-
-    }
 
     public boolean isOccupied(Vector2d position) {
         for (Animal x : this.animals) {
