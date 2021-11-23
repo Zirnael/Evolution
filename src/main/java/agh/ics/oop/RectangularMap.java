@@ -20,23 +20,8 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
 
-    public boolean isOccupied(Vector2d position) {
-        for (Animal x : this.animals) {
-            if (x.getPosition().equals(position))
-                return true;
-        }
-        return false;
-    }
-
-    public Object objectAt(Vector2d position) {
-        for (Animal x : this.animals) {
-            if (x.getPosition().equals(position))
-                return x;
-        }
-        return null;
-    }
-
-    public String toString() {
-        return this.visualizer.draw(this.start, this.end);
+    @Override
+    public Vector2d[] border() {
+        return new Vector2d[]{this.start, this.end};
     }
 }

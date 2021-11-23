@@ -3,8 +3,7 @@ package agh.ics.oop;
 import java.util.ArrayList;
 
 public class GrassField extends AbstractWorldMap implements IWorldMap  {
-    private ArrayList<Grass> grasses = new ArrayList<>();
-    private MapVisualizer visualizer = new MapVisualizer(this);
+    public ArrayList<Grass> grasses = new ArrayList<>();
 
     public GrassField(int n) {
         int limit = (int) Math.sqrt(n * 10);
@@ -36,11 +35,9 @@ public class GrassField extends AbstractWorldMap implements IWorldMap  {
 
 
     public boolean isOccupied(Vector2d position) {
-        for (Animal animal : this.animals) {
-            if (animal.getPosition().equals(position)) {
-                return true;
-            }
-        }
+        if (super.isOccupied(position))
+            return true;
+
         for (Grass grass : this.grasses) {
             if (grass.getPosition().equals(position)) {
                 return true;
@@ -49,37 +46,34 @@ public class GrassField extends AbstractWorldMap implements IWorldMap  {
         return false;
     }
 
-    public Object objectAt(Vector2d position) {
+    @Override
+    public Vector2d[] border() {
+
+        Vector2d low = grasses.get(0).getPosition();
+        Vector2d high = grasses.get(0).getPosition();
         for (Animal animal : this.animals) {
-            if (animal.getPosition().equals(position)) {
-                return animal;
-            }
+            Vector2d considered = animal.getPosition();
+            low = low.lowerLeft(considered);
+            high = high.upperRight(considered);
         }
+        for (Grass grass : this.grasses) {
+            Vector2d considered = grass.getPosition();
+            low = low.lowerLeft(considered);
+            high = high.upperRight(considered);
+        }
+        return new Vector2d[] {low, high};
+    }
+
+    public Object objectAt(Vector2d position) {
+        Object x = super.objectAt(position);
+        if (x != null)
+            return x;
+
         for (Grass grass : this.grasses) {
             if (grass.getPosition().equals(position)) {
                 return grass;
             }
         }
         return null;
-    }
-
-    public String toString() {
-        Vector2d low = grasses.get(0).getPosition();
-        Vector2d high = grasses.get(0).getPosition();
-        for (Animal animal : this.animals) {
-            Vector2d considered = animal.getPosition();
-            if (considered.precedes(low))
-                low = considered;
-            if (considered.follows(high))
-                high = considered;
-        }
-        for (Grass grass : this.grasses) {
-            Vector2d considered = grass.getPosition();
-            if (considered.precedes(low))
-                low = considered;
-            if (considered.follows(high))
-                high = considered;
-        }
-        return this.visualizer.draw(low, high);
     }
 }
