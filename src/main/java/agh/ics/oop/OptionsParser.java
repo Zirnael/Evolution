@@ -19,6 +19,10 @@ public class OptionsParser {
                     count++;
                     break;
                 }
+                default:
+                {
+                    throw new IllegalArgumentException("Argument "+ x +" is not a legal move specification");
+                }
             }
         }
         MoveDirection[] result = new MoveDirection[count];

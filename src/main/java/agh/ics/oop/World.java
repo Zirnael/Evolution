@@ -26,47 +26,52 @@ public class World {
     }
     public static void main(String[] args) {
 
-        RectangularMap xx = new RectangularMap(1,2);
-
-        MoveDirection[] directions = new OptionsParser().parse(args);
-        IWorldMap map = new GrassField(10);
-        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-        IEngine engine = new SimulationEngine(directions, map, positions);
-        engine.run();
-        System.out.println(map);
-        System.out.println("System wystartował");
-
-        int count = 0;
-        for (String argument:args){
-            if (Objects.equals(argument, "f") || Objects.equals(argument, "b") || Objects.equals(argument, "l") || Objects.equals(argument, "r"))
-                count++;
+        try
+        {
+            MoveDirection[] directions = new OptionsParser().parse(args);
+            IWorldMap map = new GrassField(10);
+            Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+            IEngine engine = new SimulationEngine(directions, map, positions);
+            System.out.println(map);
+            engine.run();
+            System.out.println(map);
+        }catch (IllegalArgumentException ex)
+        {
+            System.out.println("Program nie dziala");
         }
-
-        Directions[] to_give = new Directions[count];
-        count = 0;
-        for (String x:args) {
-            Directions to_add;
-            switch (x){
-                case "f":
-                    to_add = Directions.f;
-                    break;
-                case "b":
-                    to_add = Directions.b;
-                    break;
-                case "l":
-                    to_add = Directions.l;
-                    break;
-                case "r":
-                    to_add = Directions.r;
-                    break;
-                default:
-                    to_add = null;
-            }
-            if (to_add != null)
-                to_give[count++] = to_add;
-        }
-
-        run(to_give);
-        System.out.println("system zakończył działanie");
+//        System.out.println("System wystartował");
+//
+//        int count = 0;
+//        for (String argument:args){
+//            if (Objects.equals(argument, "f") || Objects.equals(argument, "b") || Objects.equals(argument, "l") || Objects.equals(argument, "r"))
+//                count++;
+//        }
+//
+//        Directions[] to_give = new Directions[count];
+//        count = 0;
+//        for (String x:args) {
+//            Directions to_add;
+//            switch (x){
+//                case "f":
+//                    to_add = Directions.f;
+//                    break;
+//                case "b":
+//                    to_add = Directions.b;
+//                    break;
+//                case "l":
+//                    to_add = Directions.l;
+//                    break;
+//                case "r":
+//                    to_add = Directions.r;
+//                    break;
+//                default:
+//                    to_add = null;
+//            }
+//            if (to_add != null)
+//                to_give[count++] = to_add;
+//        }
+//
+//        run(to_give);
+//        System.out.println("system zakończył działanie");
     }
 }

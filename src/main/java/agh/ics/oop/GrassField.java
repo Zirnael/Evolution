@@ -1,9 +1,11 @@
 package agh.ics.oop;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GrassField extends AbstractWorldMap implements IWorldMap  {
-    public ArrayList<Grass> grasses = new ArrayList<>();
+    public Map<Vector2d, Grass> grasses = new HashMap<>();
 
     public GrassField(int n) {
         int limit = (int) Math.sqrt(n * 10);
@@ -12,16 +14,13 @@ public class GrassField extends AbstractWorldMap implements IWorldMap  {
             int x = (int) (Math.random() * limit);
             int y = (int) (Math.random() * limit);
             Vector2d shot = new Vector2d(x, y);
-            for (Grass grass : this.grasses) {
-                if (grass.getPosition().equals(shot)) {
-                    already_there = true;
-                    break;
-                }
-            }
+            if (this.grasses.containsKey(shot))
+                already_there = true;
+
             if (already_there) {
                 i--;
             } else {
-                this.grasses.add(new Grass(shot));
+                this.grasses.put(shot,new Grass(shot));
             }
         }
     }
@@ -38,26 +37,20 @@ public class GrassField extends AbstractWorldMap implements IWorldMap  {
         if (super.isOccupied(position))
             return true;
 
-        for (Grass grass : this.grasses) {
-            if (grass.getPosition().equals(position)) {
-                return true;
-            }
-        }
-        return false;
+        return this.grasses.containsKey(position);
     }
 
     @Override
     public Vector2d[] border() {
+        Vector2d x = (Vector2d) this.grasses.keySet().toArray()[0];
+        Vector2d low = x;
+        Vector2d high = x;
 
-        Vector2d low = grasses.get(0).getPosition();
-        Vector2d high = grasses.get(0).getPosition();
-        for (Animal animal : this.animals) {
-            Vector2d considered = animal.getPosition();
+        for (Vector2d considered : this.animals.keySet()) {
             low = low.lowerLeft(considered);
             high = high.upperRight(considered);
         }
-        for (Grass grass : this.grasses) {
-            Vector2d considered = grass.getPosition();
+        for (Vector2d considered : this.grasses.keySet()) {
             low = low.lowerLeft(considered);
             high = high.upperRight(considered);
         }
@@ -69,11 +62,9 @@ public class GrassField extends AbstractWorldMap implements IWorldMap  {
         if (x != null)
             return x;
 
-        for (Grass grass : this.grasses) {
-            if (grass.getPosition().equals(position)) {
-                return grass;
-            }
-        }
+        if (this.grasses.containsKey(position))
+            return this.grasses.get(position);
+
         return null;
     }
 }
