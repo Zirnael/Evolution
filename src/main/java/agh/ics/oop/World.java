@@ -31,16 +31,23 @@ public class World {
             MoveDirection[] directions = new OptionsParser().parse(args);
             IWorldMap map = new GrassField(10);
             Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+
             IEngine engine = new SimulationEngine(directions, map, positions);
             System.out.println(map);
             engine.run();
             System.out.println(map);
         }catch (IllegalArgumentException ex)
         {
-            System.out.println("Program nie dziala");
+            System.out.println(ex);
         }
 //        System.out.println("System wystartował");
 //
+        //  Comparator xComp = new XComparatorAnimals();
+        // public int comparte (Animal o1, Animal o2)
+        // if (o1.getPosition().x > o2.getPosition().x)
+        //
+        //  SortedSet<Animal> xSorted = new TreeSet<Animal>(xComp);
+
 //        int count = 0;
 //        for (String argument:args){
 //            if (Objects.equals(argument, "f") || Objects.equals(argument, "b") || Objects.equals(argument, "l") || Objects.equals(argument, "r"))

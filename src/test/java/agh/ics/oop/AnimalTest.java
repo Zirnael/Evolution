@@ -28,7 +28,7 @@ public class AnimalTest {
         OptionsParser help = new OptionsParser();
         Animal cat = new Animal(mapa,start);
         Animal dog = new Animal(mapa,start);
-        MoveDirection[] tab = help.parse(new String[]{"f", "forward", "r", "right", "right", "left", "backward", "b", "small", "kitty"});
+        MoveDirection[] tab = help.parse(new String[]{"f", "forward", "r", "right", "right", "left", "backward", "b"});
         MoveDirection[] expected_result = {MoveDirection.FORWARD,MoveDirection.FORWARD,MoveDirection.RIGHT,MoveDirection.RIGHT,MoveDirection.RIGHT,MoveDirection.LEFT,MoveDirection.BACKWARD,MoveDirection.BACKWARD};
 
         mapa.place(cat);
