@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class GrassField extends AbstractWorldMap implements IWorldMap  {
     public Map<Vector2d, Grass> grasses = new HashMap<>();
+    private MapBoundary mapBoundary = new MapBoundary();
 
     public GrassField(int n) {
         int limit = (int) Math.sqrt(n * 10);
@@ -20,9 +21,20 @@ public class GrassField extends AbstractWorldMap implements IWorldMap  {
             if (already_there) {
                 i--;
             } else {
-                this.grasses.put(shot,new Grass(shot));
+                Grass newGrass = new Grass(shot);
+                this.grasses.put(shot,newGrass);
+                mapBoundary.ySortedGrass.add(shot);
+                mapBoundary.xSortedGrass.add(shot);
             }
         }
+    }
+    public boolean place(Animal animal) {
+        super.place(animal);
+        Vector2d position = animal.getPosition();
+        animal.addObserver(mapBoundary);
+        mapBoundary.xSortedAnimal.add(position);
+        mapBoundary.ySortedAnimal.add(position);
+        return true;
     }
 
     public boolean canMoveTo(Vector2d position) {
@@ -42,19 +54,7 @@ public class GrassField extends AbstractWorldMap implements IWorldMap  {
 
     @Override
     public Vector2d[] border() {
-        Vector2d x = (Vector2d) this.grasses.keySet().toArray()[0];
-        Vector2d low = x;
-        Vector2d high = x;
-
-        for (Vector2d considered : this.animals.keySet()) {
-            low = low.lowerLeft(considered);
-            high = high.upperRight(considered);
-        }
-        for (Vector2d considered : this.grasses.keySet()) {
-            low = low.lowerLeft(considered);
-            high = high.upperRight(considered);
-        }
-        return new Vector2d[] {low, high};
+        return mapBoundary.border();
     }
 
     public Object objectAt(Vector2d position) {
