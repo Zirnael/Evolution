@@ -6,6 +6,7 @@ public class OptionsParser {
         int count = 0;
         for(String x: tekst)
         {
+            System.out.println(x);
             switch (x){
                 case "f":
                 case "forward":
