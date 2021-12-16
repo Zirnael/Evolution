@@ -17,7 +17,7 @@ public void start(Stage primaryStage) {
     primaryStage.setTitle("GridPane Experiment");
 
     GridPane gridPane = new GridPane();
-    String args[] = getParameters().getRaw().toArray(new String[0]);
+    String[] args = getParameters().getRaw().toArray(new String[0]);
 
     MoveDirection[] directions = new OptionsParser().parse(args);
     AbstractWorldMap map = new GrassField(10);
@@ -29,33 +29,49 @@ public void start(Stage primaryStage) {
     Vector2d low = border[0];
     Vector2d high = border[1];
 
-    int width = high.x - low.x+2;
-    int height = high.y - low.y+2;
+    int width = high.x - low.x + 1;
+    int height = high.y - low.y + 1;
 
-    for(int i = 0; i < width; i++){
-        for (int j = 0; j < height; j++) {
-            Vector2d position = new Vector2d(i, j);
+    for(int i = 0; i <= width; i++){
+        for (int j = 0; j <= height; j++) {
             Label x;
-            if (map.isOccupied(position))
-            {
-                x = new Label(map.objectAt(position).toString());
-                GridPane.setHalignment(x,HPos.CENTER);
+            if (i == 0){
+                if (j==height){
+                    x = new Label("y\\x");
+                }
+                else{
+
+                    x = new Label(j+"");
+
+                }
             }
-            else
-            {
-                x = new Label("");
+            else if(j==height){
+                x = new Label((i-1)+"");
+
             }
-            gridPane.add(x,i,height-j+1);
+            else{
+                Vector2d position = new Vector2d(i-1, j);
+                if (map.isOccupied(position))
+                {
+                    x = new Label(map.objectAt(position).toString());
+                }
+                else
+                {
+                    x = new Label("");
+                }
+            }
+            GridPane.setHalignment(x,HPos.CENTER);
+            gridPane.add(x,i,height-j);
         }
     }
 
     System.out.println(map);
     engine.run();
     System.out.println(map);
-    for(int i = 0; i < width; i++){
+    for(int i = 0; i <= width; i++){
         gridPane.getColumnConstraints().add(new ColumnConstraints(20));
     }
-    for (int j = 0; j < height; j++) {
+    for (int j = 0; j <= height; j++) {
         gridPane.getRowConstraints().add(new RowConstraints(20));
     }
 
