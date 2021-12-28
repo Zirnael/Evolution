@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GrassField extends AbstractWorldMap implements IWorldMap  {
+public class GrassField extends AbstractWorldMap{
     public Map<Vector2d, Grass> grasses = new HashMap<>();
-    private MapBoundary mapBoundary = new MapBoundary();
 
     public GrassField(int n) {
         int limit = (int) Math.sqrt(n * 10);
@@ -23,48 +22,31 @@ public class GrassField extends AbstractWorldMap implements IWorldMap  {
             } else {
                 Grass newGrass = new Grass(shot);
                 this.grasses.put(shot,newGrass);
-                mapBoundary.ySortedGrass.add(shot);
-                mapBoundary.xSortedGrass.add(shot);
             }
         }
     }
-    public boolean place(Animal animal) {
+    public void place(Animal animal) {
         super.place(animal);
         Vector2d position = animal.getPosition();
-        animal.addObserver(mapBoundary);
-        mapBoundary.xSortedAnimal.add(position);
-        mapBoundary.ySortedAnimal.add(position);
-        return true;
-    }
-
-    public boolean canMoveTo(Vector2d position) {
-        if(!this.isOccupied(position))
-            return true;
-        Object x = this.objectAt(position);
-        return x instanceof Grass;
     }
 
 
     public boolean isOccupied(Vector2d position) {
         if (super.isOccupied(position))
             return true;
-
         return this.grasses.containsKey(position);
     }
 
     @Override
     public Vector2d[] border() {
-        return mapBoundary.border();
+        return new Vector2d[] {new Vector2d(0,0),new Vector2d(Constants.width,Constants.height)};
     }
 
-    public Object objectAt(Vector2d position) {
-        Object x = super.objectAt(position);
-        if (x != null)
-            return x;
-
-        if (this.grasses.containsKey(position))
-            return this.grasses.get(position);
-
-        return null;
+    @Override
+    public void positionChanged(Animal moveAnimal, Vector2d oldPosition, Vector2d newPosition) {
+        ArrayList<Animal> list = this.animalsAt(oldPosition);
+        list.remove(moveAnimal);
+        list = this.animalsAt(newPosition);
+        list.add(moveAnimal);
     }
 }

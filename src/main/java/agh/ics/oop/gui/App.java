@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 public class App extends Application {
     @Override
 public void start(Stage primaryStage) {
+        /*
+
     primaryStage.setTitle("GridPane Experiment");
 
     GridPane gridPane = new GridPane();
@@ -79,6 +81,8 @@ public void start(Stage primaryStage) {
     Scene scene = new Scene(gridPane, 300, 300);
     primaryStage.setScene(scene);
     primaryStage.show();
+
+     */
 }
 
     public static void main(String[] args) {

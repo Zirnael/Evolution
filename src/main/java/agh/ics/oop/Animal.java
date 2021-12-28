@@ -7,9 +7,9 @@ public class Animal {
     private MapDirection orientation = MapDirection.NORTH;
     private Vector2d position;
     private List<IPositionChangeObserver> observers = new ArrayList<IPositionChangeObserver>();
-    private IWorldMap mapa;
+    private AbstractWorldMap mapa;
 
-    public Animal(IWorldMap map, Vector2d initialPosition) {
+    public Animal(AbstractWorldMap map, Vector2d initialPosition) {
         this.mapa = map;
         this.position = initialPosition;
     }
@@ -53,7 +53,7 @@ public class Animal {
             }
 
         }
-        if (new_position != null && this.mapa.canMoveTo(new_position))
+        if (new_position != null)
         {
             positionChanged(this.position,new_position);
             this.position = new_position;
@@ -63,7 +63,7 @@ public class Animal {
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition)
     {
         for (IPositionChangeObserver obs : this.observers)
-            obs.positionChanged(oldPosition,newPosition);
+            obs.positionChanged(this, oldPosition,newPosition);
     }
     public Vector2d getPosition()
     {

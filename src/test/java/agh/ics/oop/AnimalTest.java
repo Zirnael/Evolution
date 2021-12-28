@@ -1,3 +1,6 @@
+
+/*
+
 package agh.ics.oop;
 
 import org.junit.jupiter.api.Assertions;
@@ -45,3 +48,4 @@ public class AnimalTest {
     }
 
 }
+ */

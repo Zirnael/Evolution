@@ -4,41 +4,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
-    Map<Vector2d, Animal> animals = new HashMap<>();
-    public MapVisualizer visualizer = new MapVisualizer(this);
+public abstract class AbstractWorldMap implements IPositionChangeObserver {
+    Map<Vector2d, ArrayList<Animal>> animals = new HashMap<>();
 
-    public boolean place(Animal animal) {
-        if (!canMoveTo(animal.getPosition()))
-            throw new IllegalArgumentException("Position " + animal.getPosition() + " is already occupied");
+    public void place(Animal animal) {
+        Vector2d position = animal.getPosition();
 
-        this.animals.put(animal.getPosition(),animal);
+        ArrayList<Animal> list = this.animals.get(position);
+        list.add(animal);
         animal.addObserver(this);
-        return true;
     }
-    public Object objectAt(Vector2d position) {
-        if (!this.isOccupied(position))
-            return null;
+    public ArrayList<Animal> animalsAt(Vector2d position) {
         return this.animals.get(position);
     }
 
     public boolean isOccupied(Vector2d position) {
-        return this.animals.containsKey(position);
+        return !this.animals.get(position).isEmpty();
     }
 
     public abstract Vector2d[] border();
 
-    public String toString() {
-        Vector2d[] border = this.border();
-        Vector2d start = border[0];
-        Vector2d end = border[1];
-        return this.visualizer.draw(start, end);
-    }
 
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition)
-    {
-        Animal animal = this.animals.get(oldPosition);
-        this.animals.remove(oldPosition);
-        this.animals.put(newPosition,animal);
-    }
 }
