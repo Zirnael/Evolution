@@ -1,10 +1,15 @@
 package agh.ics.oop;
 
-public enum MapDirection {
+public enum Orientations {
     NORTH,
+    NORTHEAST,
+    EAST,
+    SOUTHEAST,
     SOUTH,
+    SOUTHWEST,
     WEST,
-    EAST;
+    NORTHWEST;
+
 
     public String toString() {
         switch (this)
@@ -20,31 +25,25 @@ public enum MapDirection {
         }
         return "";
     }
-    public MapDirection next(){
+    public Orientations next(){
         switch (this)
         {
             case NORTH:
-                return MapDirection.EAST;
+                return Orientations.NORTHEAST;
+            case NORTHEAST:
+                return Orientations.EAST;
             case EAST:
-                return MapDirection.SOUTH;
+                return Orientations.SOUTHEAST;
+            case SOUTHEAST:
+                return Orientations.SOUTH;
             case SOUTH:
-                return MapDirection.WEST;
+                return Orientations.SOUTHWEST;
+            case SOUTHWEST:
+                return Orientations.WEST;
             case WEST:
-                return MapDirection.NORTH;
-        }
-        return null;
-    }
-    public MapDirection previous(){
-        switch (this)
-        {
-            case NORTH:
-                return MapDirection.WEST;
-            case WEST:
-                return MapDirection.SOUTH;
-            case SOUTH:
-                return MapDirection.EAST;
-            case EAST:
-                return MapDirection.NORTH;
+                return Orientations.NORTHWEST;
+            case NORTHWEST:
+                return Orientations.NORTH;
         }
         return null;
     }
@@ -53,12 +52,20 @@ public enum MapDirection {
         {
             case NORTH:
                 return new Vector2d(0,1);
+            case NORTHEAST:
+                return new Vector2d(1,1);
             case EAST:
                 return new Vector2d(1,0);
+            case SOUTHEAST:
+                return new Vector2d(1,-1);
             case SOUTH:
                 return new Vector2d(0,-1);
+            case SOUTHWEST:
+                return new Vector2d(-1,-1);
             case WEST:
                 return new Vector2d(-1,0);
+            case NORTHWEST:
+                return new Vector2d(-1,1);
         }
         return new Vector2d(0,0);
     }

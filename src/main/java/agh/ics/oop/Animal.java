@@ -1,17 +1,23 @@
 package agh.ics.oop;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Animal {
-    private MapDirection orientation = MapDirection.NORTH;
-    private Vector2d position;
+    private Orientations orientation = Orientations.NORTH;
+    Vector2d position;
     private List<IPositionChangeObserver> observers = new ArrayList<IPositionChangeObserver>();
-    private AbstractWorldMap mapa;
+    private AnyMap mapa;
+    public int[] genes;
+    public int energy;
 
-    public Animal(AbstractWorldMap map, Vector2d initialPosition) {
+    public Animal(AnyMap map, Vector2d initialPosition, int[] genes,int energy) {
         this.mapa = map;
         this.position = initialPosition;
+        this.genes = genes;
+        this.energy = energy;
     }
 
     public boolean isAt(Vector2d pos) {
@@ -32,30 +38,31 @@ public class Animal {
         return "";
     }
 
-    public void move(MoveDirection direction) {
+    public void move() {
+        int rnd = Constants.random.nextInt(32);
+        int choice = this.genes[rnd];
+
         Vector2d new_position = null;
-        switch (direction) {
-            case FORWARD: {
-                new_position = this.orientation.toUnitVector().add(this.position);
+        switch (choice) {
+            case 0: {
+                new_position = this.position.add(this.orientation.toUnitVector());
                 break;
             }
-            case BACKWARD: {
-                new_position = this.orientation.toUnitVector().opposite().add(this.position);
-                break;
+            case 4:{
+                new_position = this.position.subtract(this.orientation.toUnitVector());
             }
-            case RIGHT: {
-                this.orientation = this.orientation.next();
-                break;
-            }
-            case LEFT: {
-                this.orientation = this.orientation.previous();
-                break;
+            default: {
+                for(int i= 0 ; i < choice; i++){
+                    assert this.orientation != null;
+                    this.orientation = this.orientation.next();
+                }
             }
 
         }
         if (new_position != null)
         {
-            positionChanged(this.position,new_position);
+            new_position = this.mapa.moveAttempt(new_position);
+            this.positionChanged(this.position,new_position);
             this.position = new_position;
 
         }
@@ -76,5 +83,10 @@ public class Animal {
     void removeObserver(IPositionChangeObserver observer)
     {
         this.observers.remove(observer);
+    }
+
+    public Animal copy() {
+        Animal result = new Animal(this.mapa,this.getPosition(),this.genes,Constants.startEnergy);
+        return result;
     }
 }
