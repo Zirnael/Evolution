@@ -10,26 +10,6 @@ public abstract class AnyMap implements IPositionChangeObserver{
     public int grassNumber = 0;
     public int animalNumber = 0;
 
-    public AnyMap() {
-        int n= 50;
-        int limit = (int) Math.sqrt(n * 10);
-        for (int i = 0; i < n; i++) {
-            boolean already_there = false;
-            int x = (int) (Math.random() * limit);
-            int y = (int) (Math.random() * limit);
-            Vector2d shot = new Vector2d(x, y);
-            if (this.grasses.containsKey(shot))
-                already_there = true;
-
-            if (already_there) {
-                i--;
-            } else {
-                Grass newGrass = new Grass(shot);
-                this.grasses.put(shot,newGrass);
-                this.grassNumber += 1;
-            }
-        }
-    }
     public ArrayList<Animal> animalsAt(Vector2d position) {
         return this.animals.get(position);
     }
